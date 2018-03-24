@@ -13,13 +13,17 @@
             <GradientStop Color="#FF9B66F0" Offset="1"/>
         </RadialGradientBrush>
     </Window.Background>
+        
+    <Window.CommandBindings>
+        
+    </Window.CommandBindings>
 
-
-
-    <Border>
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top" Height="40">
+            <MenuItem Header="_Game" Height="40" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">item</MenuItem>
+        </Menu>
 
         <ScrollViewer Name="scrollViewer"
-                    
                   VerticalScrollBarVisibility="Hidden" 
                   HorizontalScrollBarVisibility="Hidden" 
                   PreviewMouseLeftButtonDown="scrollViewer_PreviewMouseLeftButtonDown" 
@@ -27,12 +31,11 @@
                   PreviewMouseLeftButtonUp="scrollViewer_PreviewMouseLeftButtonUp" 
                    >
 
-            <local:CustomGrid x:Name="normalGrid" 
+            <local:CustomGrid x:Name="myGrid" 
                               ShowCustomGridLines="True"
                               GridLineBrush="#FF602CD4"
                               GridLineThickness="1"
-              VerticalAlignment="Center" HorizontalAlignment="Center" 
-              MouseLeftButtonUp="normalGrid_MouseLeftButtonUp">
+                              MouseLeftButtonUp="normalGrid_MouseLeftButtonUp">
 
 
             </local:CustomGrid>
@@ -40,5 +43,5 @@
 
         </ScrollViewer>
 
-    </Border>
+    </DockPanel>
 </Window>
