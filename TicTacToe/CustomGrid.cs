@@ -8,6 +8,7 @@ using System.Windows.Media;
 
 namespace TicTacToe
 {
+    [Serializable]
     public class CustomGrid : Grid
     {
         #region GridLinesVisibilityEnum

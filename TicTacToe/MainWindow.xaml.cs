@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 using ShapeControls;
 
+//lets say 4 players
 //TODO implement different shapes
 //TODO change cursor color for each player
+//TODO fix menu colors, template ??
 
 
 namespace TicTacToe
@@ -27,6 +31,8 @@ namespace TicTacToe
     {
         private int boardSize = 60;
         private int cellSize = 30;
+
+        bool player = false;
 
 
         public MainWindow()
@@ -45,7 +51,6 @@ namespace TicTacToe
             // Start in tne middle
             scrollViewer.ScrollToVerticalOffset((cellSize * boardSize - Height) / 2);
             scrollViewer.ScrollToHorizontalOffset((cellSize * boardSize - Width) / 2);
-
         }
 
 
@@ -62,13 +67,23 @@ namespace TicTacToe
             UserControl control = myGrid.Children.Cast<UserControl>().FirstOrDefault(ctrl => Grid.GetRow(ctrl) == row && Grid.GetColumn(ctrl) == col);
             if (control != null) return;
 
-            // Insert new shape
+            if(player)
+            {
+            //TODO For two Players Insert new shape
             XShape shape = new XShape();
             myGrid.Children.Add(shape);
             Grid.SetRow(shape, row);
             Grid.SetColumn(shape, col);
+            }
+            else
+            {
+                OShape shape = new OShape();
+                myGrid.Children.Add(shape);
+                Grid.SetRow(shape, row);
+                Grid.SetColumn(shape, col);
+            }
 
-            // TODO: implement
+
             int maxLength = 0;
             foreach (Direction dir in Enum.GetValues(typeof(Direction)))
             {
@@ -81,50 +96,62 @@ namespace TicTacToe
             {
                 MessageBox.Show($"Player won");
                 Title = maxLength.ToString();
-                // wtf??
                 myGrid.MouseLeftButtonUp -= normalGrid_MouseLeftButtonUp;
             }
+
+            player = !player;
         }
 
 
 
-        // TODO: fix this shit, apply different pictuure items
+
         int CheckForWinning(int row, int col, Direction direction)
         {
             int length = 0;
 
             // Go to the last matching element of specified kind in specified direction
-                while (true)
+            while (true)
+            {
+                switch (direction)
                 {
-                    switch (direction)
-                    {
-                        case Direction.Vertical: row--; break;
-                        case Direction.Horizontal: col--; break;
-                        case Direction.LeftAslant: row--; col--; break;
-                        case Direction.RightAslant: row--; col++; break;
-                    }
-                    UserControl element = myGrid.Children.Cast<UserControl>().FirstOrDefault(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col);
+                    case Direction.Vertical: row--; break;
+                    case Direction.Horizontal: col--; break;
+                    case Direction.LeftAslant: row--; col--; break;
+                    case Direction.RightAslant: row--; col++; break;
+                }
+                UserControl element = myGrid.Children.Cast<UserControl>().FirstOrDefault(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col);
 
-                    // TODO if element is not currentPlayer
+                if (player)
+                {
+                    // TODO for two players!!
                     if (!(element is XShape)) break;
                 }
+                else if (!player)
+                if (!(element is OShape)) break;
+            }
 
             // Now go back untill first unmatching element and count steps
-                while (true)
+            while (true)
+            {
+                switch (direction)
                 {
-                    switch (direction)
-                    {
-                        case Direction.Vertical: row++; break;
-                        case Direction.Horizontal: col++; break;
-                        case Direction.LeftAslant: row++; col++; break;
-                        case Direction.RightAslant: row++; col--; break;
-                    }
-                    UserControl element = myGrid.Children.Cast<UserControl>().FirstOrDefault(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col);
-
-                if (!(element is XShape))
-                    break;
-                    length++;
+                    case Direction.Vertical: row++; break;
+                    case Direction.Horizontal: col++; break;
+                    case Direction.LeftAslant: row++; col++; break;
+                    case Direction.RightAslant: row++; col--; break;
                 }
+                UserControl element = myGrid.Children.Cast<UserControl>().FirstOrDefault(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col);
+
+                // TODO for two players!!
+                if (player)
+                {
+                    // TODO for two players!!
+                    if (!(element is XShape)) break;
+                }
+                else if (!player)
+                    if (!(element is OShape)) break;
+                length++;
+            }
 
             return length;
         }
@@ -165,6 +192,51 @@ namespace TicTacToe
                 e.Handled = true;
             }
             scrollViewer.ReleaseMouseCapture();
+        }
+
+        #endregion
+
+
+        #region Menu Commands
+
+        private void SaveGame_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (myGrid.Children.Count > 0)
+                e.CanExecute = true;
+        }
+
+        private void SaveGame_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+            Title = myGrid.Children.Count.ToString();
+            using (Stream stream = new FileStream("game.xml", FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+
+                XmlSerializer serializer = new XmlSerializer(typeof(UIElementCollection));
+                serializer.Serialize(stream, myGrid.Children);
+            }
+        }
+
+        private void LoadGame_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+
+            e.CanExecute = true;
+        }
+
+        private void LoadGame_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void NewGame_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void NewGame_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            myGrid.Children.Clear();
+            myGrid.MouseLeftButtonUp += normalGrid_MouseLeftButtonUp;
         }
 
         #endregion

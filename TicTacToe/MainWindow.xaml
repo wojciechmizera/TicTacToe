@@ -13,15 +13,74 @@
             <GradientStop Color="#FF9B66F0" Offset="1"/>
         </RadialGradientBrush>
     </Window.Background>
-        
+
     <Window.CommandBindings>
-        
+        <CommandBinding Command="local:CustomCommands.SaveGame"
+                        CanExecute="SaveGame_CanExecute"
+                        Executed="SaveGame_Executed"/>
+
+        <CommandBinding Command="local:CustomCommands.LoadGame"
+                        CanExecute="LoadGame_CanExecute"
+                        Executed="LoadGame_Executed"/>
+
+        <CommandBinding Command="local:CustomCommands.NewGame"
+                        CanExecute="NewGame_CanExecute"
+                        Executed="NewGame_Executed"/>
     </Window.CommandBindings>
 
     <DockPanel LastChildFill="True">
-        <Menu DockPanel.Dock="Top" Height="40">
-            <MenuItem Header="_Game" Height="40" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center">item</MenuItem>
+        <Menu DockPanel.Dock="Top" Height="40" >
+            <Menu.Background>
+                <LinearGradientBrush EndPoint="1,0.5" MappingMode="RelativeToBoundingBox" StartPoint="0,0.5">
+                    <GradientStop Color="#FF31D9C4"/>
+                    <GradientStop Color="#FF010BCA" Offset="1"/>
+                </LinearGradientBrush>
+            </Menu.Background>
+           
+            <MenuItem Height="40">
+                <MenuItem.Header>
+                    <Viewbox>
+                        <TextBlock Text="Game" FontFamily="Comic Sans MS" 
+                                   FontStyle="Italic" Margin="1"/>
+                    </Viewbox>
+                </MenuItem.Header>
+                <MenuItem Height="30" Command="local:CustomCommands.NewGame">
+                    <MenuItem.Header>
+                        <Viewbox>
+                            <TextBlock Text="New Game" FontFamily="Comic Sans MS" FontStyle="Italic"/>
+                        </Viewbox>
+                    </MenuItem.Header>
+                </MenuItem>
+
+                <MenuItem Height="30" Command="local:CustomCommands.LoadGame">
+                    <MenuItem.Header>
+                        <Viewbox>
+                            <TextBlock Text="Load Game" FontFamily="Comic Sans MS" FontStyle="Italic"/>
+                        </Viewbox>
+                    </MenuItem.Header>
+                </MenuItem>
+
+                <MenuItem Height="30" Command="local:CustomCommands.SaveGame">
+                    <MenuItem.Header>
+                        <Viewbox>
+                            <TextBlock Text="Save Game" FontFamily="Comic Sans MS" FontStyle="Italic"/>
+                        </Viewbox>
+                    </MenuItem.Header>
+                </MenuItem>
+
+            </MenuItem>
+
+            <MenuItem Height="40" >
+                <MenuItem.Header>
+                    <Viewbox>
+                        <TextBlock Text="Options" FontFamily="Comic Sans MS" 
+                                   FontStyle="Italic" Margin="1"/>
+                    </Viewbox>
+                </MenuItem.Header>
+            </MenuItem>
+
         </Menu>
+
 
         <ScrollViewer Name="scrollViewer"
                   VerticalScrollBarVisibility="Hidden" 
