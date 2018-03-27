@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,41 +19,23 @@ namespace TicTacToe
         /// Type of user control
         /// </summary>
 
-        public Type controlType { get; set; }
+        public Type ControlType { get; set; }
         public string Description { get; set; }
         public string PlayerCursor { get; set; }
 
         /// <summary>
         /// List of coordinates used for saving and loading the game
         /// </summary>
-        public List<Coords> Coordinates = new List<Coords>();
+        public List<Point> Points = new List<Point>();
 
         public Player(Type userControl, string description, string cursorPath)
         {
-            controlType = userControl;
+            ControlType = userControl;
             Description = description;
             PlayerCursor = cursorPath;
         }
 
         public Player(){ }
 
-    }
-
-
-    [Serializable]
-    /// <summary>
-    /// Class representing coordinates of a shape on the main grid
-    /// </summary>
-    public class Coords
-    {
-        public int GridX { get; }
-        public int GridY { get; }
-        public Coords(int X, int Y)
-        {
-            GridX = X;
-            GridY = Y;
-        }
-
-        public Coords(){ }
     }
 }

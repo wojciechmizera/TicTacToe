@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -21,10 +22,8 @@ using ShapeControls;
 //TODO fix menu colors, template ??
 // TODO options : nr of players, shape for player, nr of shapes in a row to win
 
-// DONE : added saving and loading game
-// DONE : Improved checking the score
-// DONE : implemented custom controls for shapes
-// DONE : change cursor for players
+
+
 namespace TicTacToe
 {
     /// <summary>
@@ -37,20 +36,24 @@ namespace TicTacToe
         public int WinningScore { get; set; } = 5;
         public bool GameOver { get; set; } = false;
 
-
-        Player currentPlayer;
-        int currentPlayerIndex;
-        public List<Player> playerList = new List<Player>();
-
-
-
+        PlayerList players;
 
         #region Default constructor
         public MainWindow()
         {
             InitializeComponent();
 
-            // Add rows and columns to the grid
+            InitializeGrid();
+
+            players = new PlayerList(
+                new Player(typeof(XShape), "X", @"C:\Users\Sir\source\repos\GreenArrow.cur"),
+                new Player(typeof(OShape), "O", @"C:\Users\Sir\source\repos\RedArrow.cur"));
+
+            Cursor = new Cursor(players.Current.PlayerCursor);
+        }
+
+        private void InitializeGrid()
+        {
             for (int i = 0; i < BoardSize; i++)
             {
                 RowDefinition row = new RowDefinition { Height = new GridLength(CellSize) };
@@ -59,127 +62,112 @@ namespace TicTacToe
                 myGrid.ColumnDefinitions.Add(column);
             }
 
-            // Start in tne middle
             scrollViewer.ScrollToVerticalOffset((CellSize * BoardSize - Height) / 2);
             scrollViewer.ScrollToHorizontalOffset((CellSize * BoardSize - Width) / 2);
-
-            // Create list of players
-            playerList.Add(new Player(typeof(XShape), "X", @"C:\Users\Sir\source\repos\GreenArrow.cur"));
-            playerList.Add(new Player(typeof(OShape), "O", @"C:\Users\Sir\source\repos\RedArrow.cur"));
-
-            // Set first player
-            currentPlayer = playerList[0];
-            currentPlayerIndex = 0;
-            this.Cursor = new Cursor(currentPlayer.PlayerCursor);
-
         }
         #endregion
 
 
         private void normalGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // Determine the cell we clicked
-            Point position = e.GetPosition(myGrid);
-            int row = (int)position.Y / CellSize;
-            int col = (int)position.X / CellSize;
+            if (GameOver)
+                return;
 
-            // Avoid overwriting controls
-            UserControl control = myGrid.Children.Cast<UserControl>().FirstOrDefault(ctrl => Grid.GetRow(ctrl) == row && Grid.GetColumn(ctrl) == col);
-            if (control != null) return;
+            System.Windows.Point cursorPosition = e.GetPosition(myGrid);
+            System.Drawing.Point gridPosition = new System.Drawing.Point((int)cursorPosition.X / CellSize, (int)cursorPosition.Y / CellSize);
 
-            // Generate control and add it to the grid
-            UserControl userControl = (UserControl)Activator.CreateInstance(currentPlayer.controlType);
-            myGrid.Children.Add(userControl);
-            Grid.SetRow(userControl, row);
-            Grid.SetColumn(userControl, col);
+            if (CheckCell(gridPosition) != null) return;
 
-            currentPlayer.Coordinates.Add(new Coords(row, col));
+            AddControlToGrid(players.Current.ControlType, gridPosition);
+            players.Current.Points.Add(gridPosition);
 
-            int playerScore = CheckScore(row, col);
-
+            int playerScore = CheckScore(gridPosition);
             if (playerScore >= 5)
             {
                 GameEnded();
             }
 
-            // next player
-            currentPlayerIndex = (currentPlayerIndex + 1) % playerList.Count;
-            currentPlayer = playerList[currentPlayerIndex];
-            this.Cursor = new Cursor(currentPlayer.PlayerCursor);
+            players.NextPlayer();
+            this.Cursor = new Cursor(players.Current.PlayerCursor);
         }
+
+        private void AddControlToGrid(Type controlType, System.Drawing.Point position)
+        {
+            UserControl control = (UserControl)Activator.CreateInstance(controlType);
+            myGrid.Children.Add(control);
+            Grid.SetRow(control, position.Y);
+            Grid.SetColumn(control, position.X);
+        }
+
+        private UserControl CheckCell(System.Drawing.Point position)
+        {
+            return myGrid.Children.Cast<UserControl>().FirstOrDefault(ctrl => Grid.GetRow(ctrl) == position.Y && Grid.GetColumn(ctrl) == position.X);
+        }
+
+
 
         private void GameEnded()
         {
-            MessageBox.Show($"Player {currentPlayer.Description} won");
-            myGrid.MouseLeftButtonUp -= normalGrid_MouseLeftButtonUp;
+            MessageBox.Show($"Player {players.Current.Description} won");
+            //myGrid.MouseLeftButtonUp -= normalGrid_MouseLeftButtonUp;
             GameOver = true;
         }
 
 
-
-
-        /// <summary>
-        /// Function checking how many shapes in a row we have for every direction
-        /// </summary>
-        /// <param name="currentRow"></param>
-        /// <param name="currentColumn"></param>
-        /// <param name="direction"></param>
-        /// <returns></returns>
-        int CheckScore(int row, int column)
+        int CheckScore(System.Drawing.Point position)
         {
             int maxScore = 0;
 
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                int rowForward = row;
-                int columnForward = column;
-                int rowBackward = row;
-                int columnBackward = column;
+                System.Drawing.Point pointForward = new System.Drawing.Point(position.X, position.Y);
+                System.Drawing.Point pointBackward = new System.Drawing.Point(position.X, position.Y);
+
+                bool wentForward;
+                bool wentBackward;
 
                 int directionScore = 1;
-
-                // Go to the last matching element of specified kind in specified direction
-                UserControl elementForward = null;
-                UserControl elementBackward = null;
                 do
                 {
-                    switch (direction)
-                    {
-                        case Direction.Vertical:
-                            rowForward--; rowBackward++;
-                            break;
-                        case Direction.Horizontal:
-                            columnForward--; columnBackward++;
-                            break;
-                        case Direction.LeftAslant:
-                            rowForward--; columnForward--;
-                            rowBackward++; columnBackward++;
-                            break;
-                        case Direction.RightAslant:
-                            rowForward--; columnForward++;
-                            rowBackward++; columnBackward--;
-                            break;
-                    }
+                    MovePoints(direction, ref pointForward, ref pointBackward);
 
-                    elementForward = myGrid.Children.Cast<UserControl>().FirstOrDefault(e => Grid.GetRow(e) == rowForward && Grid.GetColumn(e) == columnForward);
-                    elementBackward = myGrid.Children.Cast<UserControl>().FirstOrDefault(e => Grid.GetRow(e) == rowBackward && Grid.GetColumn(e) == columnBackward);
+                    wentForward = CheckCell(pointForward) != null && CheckCell(pointForward).GetType() == players.Current.ControlType;
+                    wentBackward = CheckCell(pointBackward) != null && CheckCell(pointBackward).GetType() == players.Current.ControlType;
 
-                    if (elementForward != null && elementForward.GetType() == currentPlayer.controlType) directionScore++;
-                    if (elementBackward != null && elementBackward.GetType() == currentPlayer.controlType) directionScore++;
+                    directionScore += Convert.ToInt32(wentForward) + Convert.ToInt32(wentBackward);
 
-                } while ((elementForward != null && elementForward.GetType() == currentPlayer.controlType) 
-                || (elementBackward != null && elementBackward.GetType() == currentPlayer.controlType));
+                } while (wentForward || wentBackward);
 
                 if (directionScore > maxScore) maxScore = directionScore;
             }
             return maxScore;
         }
-        
+
+        private void MovePoints(Direction direction, ref System.Drawing.Point pointForward, ref System.Drawing.Point pointBackward)
+        {
+            switch (direction)
+            {
+                case Direction.Vertical:
+                    pointForward.Y--; pointBackward.Y++;
+                    break;
+                case Direction.Horizontal:
+                    pointForward.X--; pointBackward.X++;
+                    break;
+                case Direction.LeftAslant:
+                    pointForward.Y--; pointForward.X--;
+                    pointBackward.Y++; pointBackward.X++;
+                    break;
+                case Direction.RightAslant:
+                    pointForward.Y--; pointForward.X++;
+                    pointBackward.Y++; pointBackward.X--;
+                    break;
+            }
+        }
+
 
         #region Managing scrolling
 
-
-        Point scrollMousePoint = new Point();
+        System.Windows.Point scrollMousePoint = new System.Windows.Point();
         double verticalOffset = 1;
         double horizontalOffset = 1;
 
@@ -194,6 +182,7 @@ namespace TicTacToe
             scrollViewer.CaptureMouse();
         }
 
+
         private void scrollViewer_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (scrollViewer.IsMouseCaptured)
@@ -201,8 +190,8 @@ namespace TicTacToe
                 scrollViewer.ScrollToVerticalOffset(verticalOffset + (scrollMousePoint.Y - e.GetPosition(scrollViewer).Y));
                 scrollViewer.ScrollToHorizontalOffset(horizontalOffset + (scrollMousePoint.X - e.GetPosition(scrollViewer).X));
             }
-
         }
+
 
         private void scrollViewer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -224,43 +213,38 @@ namespace TicTacToe
                 e.CanExecute = true;
         }
 
+
         private void SaveGame_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             using (Stream stream = new FileStream("game.bin", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, playerList);
+                formatter.Serialize(stream, players);
             }
         }
+
 
         private void LoadGame_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
+
         private void LoadGame_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            myGrid.Children.Clear();
-            playerList.Clear();
-
+            NewGame_Executed(sender, e);
             try
             {
                 using (Stream stream = new FileStream("game.bin", FileMode.Open, FileAccess.Read, FileShare.None))
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
-                    playerList = (List<Player>)formatter.Deserialize(stream);
+                    players = (PlayerList)formatter.Deserialize(stream);
 
-                    foreach (Player p in playerList)
-                    {
-                        foreach (Coords c in p.Coordinates)
-                        {
-                            UserControl userControl = (UserControl)Activator.CreateInstance(p.controlType);
-                            myGrid.Children.Add(userControl);
-                            Grid.SetRow(userControl, c.GridX);
-                            Grid.SetColumn(userControl, c.GridY);
-                        }
-                    }
-                   //TODO fix current player issue
+                    foreach (Player player in players)
+                        foreach (var point in player.Points)
+                            AddControlToGrid(player.ControlType, point);
+
+                    Cursor = new Cursor(players.Current.PlayerCursor);
                 }
             }
             catch (Exception ex)
@@ -278,11 +262,8 @@ namespace TicTacToe
         private void NewGame_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             myGrid.Children.Clear();
-            foreach (Player player in playerList)
-            {
-                player.Coordinates = new List<Coords>();
-            }
-            myGrid.MouseLeftButtonUp += normalGrid_MouseLeftButtonUp;
+            foreach (Player player in players)
+                player.Points.Clear();
 
             GameOver = false;
         }
