@@ -15,13 +15,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Xml.Serialization;
 using ShapeControls;
 
 //TODO lets say 4 players
-//TODO fix menu colors, template ??
 // TODO options : nr of players, shape for player, nr of shapes in a row to win
-
 
 
 namespace TicTacToe
@@ -224,11 +221,6 @@ namespace TicTacToe
         }
 
 
-        private void LoadGame_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
 
         private void LoadGame_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -253,11 +245,6 @@ namespace TicTacToe
             }
         }
 
-        private void NewGame_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
 
         private void NewGame_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -269,5 +256,21 @@ namespace TicTacToe
         }
 
         #endregion
+
+        private void Command_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Options_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+
+        }
     }
 }

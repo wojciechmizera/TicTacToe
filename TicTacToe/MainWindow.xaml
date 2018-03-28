@@ -20,15 +20,24 @@
                         Executed="SaveGame_Executed"/>
 
         <CommandBinding Command="local:CustomCommands.LoadGame"
-                        CanExecute="LoadGame_CanExecute"
+                        CanExecute="Command_CanExecute"
                         Executed="LoadGame_Executed"/>
 
         <CommandBinding Command="local:CustomCommands.NewGame"
-                        CanExecute="NewGame_CanExecute"
+                        CanExecute="Command_CanExecute"
                         Executed="NewGame_Executed"/>
+
+        <CommandBinding Command="local:CustomCommands.Options"
+                        CanExecute="Command_CanExecute"
+                        Executed="Options_Executed"/>
+  
+        <CommandBinding Command="local:CustomCommands.Help"
+                        CanExecute="Command_CanExecute"
+                        Executed="Help_Executed"/>
     </Window.CommandBindings>
 
     <DockPanel LastChildFill="True">
+        
         <Menu DockPanel.Dock="Top" Height="40" >
             <Menu.Background>
                 <LinearGradientBrush EndPoint="1,0.5" MappingMode="RelativeToBoundingBox" StartPoint="0,0.5">
@@ -36,18 +45,17 @@
                     <GradientStop Color="#FF010BCA" Offset="1"/>
                 </LinearGradientBrush>
             </Menu.Background>
-           
+
             <MenuItem Height="40">
                 <MenuItem.Header>
                     <Viewbox>
-                        <TextBlock Text="Game" FontFamily="Comic Sans MS" 
-                                   FontStyle="Italic" Margin="1"/>
+                        <TextBlock Text="Game" Margin="2"/>
                     </Viewbox>
                 </MenuItem.Header>
                 <MenuItem Height="30" Command="local:CustomCommands.NewGame">
                     <MenuItem.Header>
                         <Viewbox>
-                            <TextBlock Text="New Game" FontFamily="Comic Sans MS" FontStyle="Italic"/>
+                            <TextBlock Text="New Game" Margin="15,0" />
                         </Viewbox>
                     </MenuItem.Header>
                 </MenuItem>
@@ -55,7 +63,7 @@
                 <MenuItem Height="30" Command="local:CustomCommands.LoadGame">
                     <MenuItem.Header>
                         <Viewbox>
-                            <TextBlock Text="Load Game" FontFamily="Comic Sans MS" FontStyle="Italic"/>
+                            <TextBlock Text="Load Game" />
                         </Viewbox>
                     </MenuItem.Header>
                 </MenuItem>
@@ -63,44 +71,55 @@
                 <MenuItem Height="30" Command="local:CustomCommands.SaveGame">
                     <MenuItem.Header>
                         <Viewbox>
-                            <TextBlock Text="Save Game" FontFamily="Comic Sans MS" FontStyle="Italic"/>
+                            <TextBlock Text="Save Game" />
                         </Viewbox>
                     </MenuItem.Header>
                 </MenuItem>
 
             </MenuItem>
 
-            <MenuItem Height="40" >
+            <MenuItem Height="40" Command="local:CustomCommands.Options">
                 <MenuItem.Header>
                     <Viewbox>
-                        <TextBlock Text="Options" FontFamily="Comic Sans MS" 
-                                   FontStyle="Italic" Margin="1"/>
+                        <TextBlock Text="Options" 
+                                   Margin="2"/>
+                    </Viewbox>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Height="40" Command="local:CustomCommands.Help">
+                <MenuItem.Header>
+                    <Viewbox>
+                        <TextBlock Text="Help" Margin="2"/>
                     </Viewbox>
                 </MenuItem.Header>
             </MenuItem>
 
         </Menu>
 
+        <Frame x:Name="myFrame" 
+               HorizontalContentAlignment="Center" 
+               VerticalContentAlignment="Center"
+               />
 
         <ScrollViewer Name="scrollViewer"
                   VerticalScrollBarVisibility="Hidden" 
                   HorizontalScrollBarVisibility="Hidden" 
                   PreviewMouseLeftButtonDown="scrollViewer_PreviewMouseLeftButtonDown" 
                   PreviewMouseMove="scrollViewer_PreviewMouseMove" 
-                  PreviewMouseLeftButtonUp="scrollViewer_PreviewMouseLeftButtonUp" 
-                   >
+                  PreviewMouseLeftButtonUp="scrollViewer_PreviewMouseLeftButtonUp">
 
             <local:CustomGrid x:Name="myGrid" 
                               ShowCustomGridLines="True"
                               GridLineBrush="#FF602CD4"
                               GridLineThickness="1"
                               MouseLeftButtonUp="normalGrid_MouseLeftButtonUp">
-
-
             </local:CustomGrid>
 
 
         </ScrollViewer>
+
+
 
     </DockPanel>
 </Window>
