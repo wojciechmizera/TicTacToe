@@ -33,7 +33,7 @@
     <DockPanel LastChildFill="True">
 
         <Menu DockPanel.Dock="Top" Height="40" Background="{StaticResource MenuBarBrush}">
-           
+
 
             <MenuItem Height="40">
                 <MenuItem.Header>
@@ -83,19 +83,31 @@
                     </Viewbox>
                 </MenuItem.Header>
             </MenuItem>
-
         </Menu>
-        <StackPanel>
-            <Label Content=" label text" FontSize="20" HorizontalAlignment="Center"/>
 
-            <Button Background="Transparent" 
-                    Content="Back to Game" 
-                    FontFamily="Comis Sans MS" 
-                    FontWeight="DemiBold" 
-                    FontSize="20"
-                    VerticalAlignment="Center" 
-                    Click="Button_Click" Template="{DynamicResource ButtonBaseControlTemplate1}"/>
-                    
+        <StackPanel>
+
+            <TextBlock 
+                Margin="100,100,0,0"
+                Style="{StaticResource MenuText}" 
+                Text="To start new game - click menu Game - New Game"/>
+            <TextBlock 
+                Margin="100,0,0,0"
+                Style="{StaticResource MenuText}" 
+                Text="To save game - click menu Game - Save Game"/>
+            <TextBlock 
+                Margin="100,0,0,0"
+                Style="{StaticResource MenuText}" 
+                Text="To load saved game - click menu Game - Load Game"/>
+            <TextBlock 
+                Margin="100,0,0,80"
+                Style="{StaticResource MenuText}" 
+                Text="To change game settings - click menu Options"/>
+
+
+
+            <Button Width="150" Content="OK" Click="Button_Click" />
+
         </StackPanel>
     </DockPanel>
 

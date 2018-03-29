@@ -87,18 +87,41 @@
             </MenuItem>
 
         </Menu>
-        <StackPanel>
-            <Label Content="Options" FontSize="20" HorizontalAlignment="Center"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock
+                    Margin="100,80,0,0"
+                    FontSize="28"
+                    Style="{StaticResource MenuText}"
+                    Text="Number of players"/>
+                <TextBlock
+                    Margin="100,30,0,0"
+                    FontSize="28"
+                    Style="{StaticResource MenuText}"
+                    Text="Size of the grid"/>
+                <TextBlock
+                    Margin="100,30,0,0"
+                    FontSize="28"
+                    Style="{StaticResource MenuText}"
+                    Text="Number of shapes to win"/>
 
-            <Button Background="Transparent" 
-                    Content="OK" 
-                    FontFamily="Comis Sans MS" 
-                    FontWeight="DemiBold" 
-                    FontSize="20"
-                    VerticalAlignment="Center" 
+
+                <Button 
+                    Margin="0,50,0,0"
+                    Content="Back" 
                     Click="Button_Click"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                
+            <Button Content="OK" Click="Button_Click"/>
+            </StackPanel>
+            
 
-        </StackPanel>
+        </Grid>
     </DockPanel>
 
 </Page>

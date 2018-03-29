@@ -12,12 +12,19 @@
         <GradientStop Color="{StaticResource BackgroundInner}" Offset="1"/>
     </RadialGradientBrush>
 
+    
+    
     <Color x:Key="MenuRight">#FF0E6CF4</Color>
     <SolidColorBrush x:Key="MenuRightBrush" Color="{StaticResource MenuRight}"/>
 
     <Color x:Key="MenuLeft">#FF31D9C4</Color>
     <SolidColorBrush x:Key="MenuLeftBrush">#FF20D6CC</SolidColorBrush>
 
+    <RadialGradientBrush x:Key="ButtonBrush">
+        <GradientStop Color="{StaticResource MenuLeft}"/>
+        <GradientStop Color="{StaticResource MenuRight}" Offset="1"/>
+    </RadialGradientBrush>
+    
     <LinearGradientBrush x:Key="MenuBarBrush" 
                          EndPoint="1,0.5" 
                          MappingMode="RelativeToBoundingBox" 
@@ -30,6 +37,12 @@
         <GradientStop Color="{StaticResource MenuRight}" Offset="1"/>
         <GradientStop Color="{StaticResource MenuLeft}" Offset="0.442"/>
     </LinearGradientBrush>
+
+    <Color x:Key="ControlDisabled">#888888</Color>
+    <SolidColorBrush x:Key="DisabledBrush" Color="ControlDisabled"/>
+
+    <Color x:Key="MouseHoverButton">#FFA80EF4</Color>
+    <SolidColorBrush x:Key="MouseHoverButtonBrush" Color="{StaticResource MouseHoverButton}"/>
 
 
 </ResourceDictionary>
