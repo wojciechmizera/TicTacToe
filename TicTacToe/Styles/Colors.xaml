@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="BackgroundOuter">#FFAA9CF6</Color>
+    <SolidColorBrush x:Key="BackgroundOuterBrush" Color="{StaticResource BackgroundOuter}"/>
+
+    <Color x:Key="BackgroundInner">#FF9B66F0</Color>
+    <SolidColorBrush x:Key="BackgroundInnerBrush" Color="{StaticResource BackgroundInner}"/>
+
+    <RadialGradientBrush x:Key="BackgroundBrush">
+        <GradientStop Color="{StaticResource BackgroundOuter}"/>
+        <GradientStop Color="{StaticResource BackgroundInner}" Offset="1"/>
+    </RadialGradientBrush>
+
+    <Color x:Key="MenuRight">#FF0E6CF4</Color>
+    <SolidColorBrush x:Key="MenuRightBrush" Color="{StaticResource MenuRight}"/>
+
+    <Color x:Key="MenuLeft">#FF31D9C4</Color>
+    <SolidColorBrush x:Key="MenuLeftBrush">#FF20D6CC</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="MenuBarBrush" 
+                         EndPoint="1,0.5" 
+                         MappingMode="RelativeToBoundingBox" 
+                         StartPoint="0,0.5">
+        <GradientStop Color="{StaticResource MenuLeft}"/>
+        <GradientStop Color="{StaticResource MenuRight}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ToggleMenuBrush"  EndPoint="0.7,1" StartPoint="0.3,0">
+        <GradientStop Color="{StaticResource MenuRight}" Offset="1"/>
+        <GradientStop Color="{StaticResource MenuLeft}" Offset="0.442"/>
+    </LinearGradientBrush>
+
+
+</ResourceDictionary>
