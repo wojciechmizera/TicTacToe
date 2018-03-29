@@ -19,7 +19,8 @@ using ShapeControls;
 
 //TODO lets say 4 players
 // TODO options : nr of players, shape for player, nr of shapes in a row to win
-
+// TODO menu - przesównica :D
+// TODO window icon!!!
 
 namespace TicTacToe
 {
@@ -40,7 +41,7 @@ namespace TicTacToe
             Options = new OptionsPage(this);
             mainFrame.Content = Game;
 
-
+            DataContext = new WindowDataContext();
         }
 
 

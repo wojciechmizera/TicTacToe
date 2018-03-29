@@ -44,10 +44,11 @@ namespace TicTacToe
             InitializeGrid();
 
             players = new PlayerList(
-                new Player(typeof(XShape), "X", @"C:\Users\Sir\source\repos\GreenArrow.cur"),
-                new Player(typeof(OShape), "O", @"C:\Users\Sir\source\repos\RedArrow.cur"));
+                new Player(typeof(XShape), "X", @"C:\Users\Sir\source\repos\GreenArrow.cur" /*@"Cursors\GreenArrow.cur"*/),
+                new Player(typeof(OShape), "O", @"C:\Users\Sir\source\repos\RedArrow.cur"  /*@"Cursors\RedArrow.cur"*/ ));
 
             hostWindow.Cursor = new Cursor(players.Current.PlayerCursor);
+            
         }
 
         private void InitializeGrid()
