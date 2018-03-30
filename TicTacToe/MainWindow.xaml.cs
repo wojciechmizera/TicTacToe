@@ -38,7 +38,6 @@ namespace TicTacToe
         }
 
 
-
         private void SaveGame_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (Game.myGameGrid.Children.Count > 0 && !Game.GameOver)
@@ -54,7 +53,6 @@ namespace TicTacToe
                 formatter.Serialize(stream, Game);
             }
         }
-
 
 
         public void LoadGame_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -98,16 +96,16 @@ namespace TicTacToe
             e.CanExecute = true;
         }
 
+
         private void Options_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             mainFrame.Content = new OptionsPage(this);
         }
 
+
         private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             mainFrame.Content = new HelpPage(this);
         }
-
-
     }
 }
