@@ -17,7 +17,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ShapeControls;
 
-// TODO window icon!!!
 
 namespace TicTacToe
 {
@@ -50,7 +49,7 @@ namespace TicTacToe
             using (Stream stream = new FileStream("game.bin", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, Game);
+                formatter.Serialize(stream, Game.Game);
             }
         }
 
@@ -69,7 +68,7 @@ namespace TicTacToe
 
                     Game.InitializeGrid();
 
-                    Cursor = new Cursor(Game.Game.CurrentPlayer.Cursor);
+                    Game.Cursor = new Cursor(Game.Game.CurrentPlayer.Cursor);
                 }
             }
             catch (Exception ex)

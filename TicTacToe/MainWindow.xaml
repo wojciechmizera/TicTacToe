@@ -13,7 +13,8 @@
         >
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.SaveGame"
-                        CanExecute="SaveGame_CanExecute" />
+                        CanExecute="SaveGame_CanExecute" 
+                        Executed="SaveGame_Executed"/>
 
         <CommandBinding Command="local:CustomCommands.LoadGame"
                         CanExecute="CanExecute"
