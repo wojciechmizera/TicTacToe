@@ -40,8 +40,6 @@ namespace TicTacToe
             Help = new HelpPage(this);
             Options = new OptionsPage(this);
             mainFrame.Content = Game;
-
-            DataContext = new WindowDataContext();
         }
 
 

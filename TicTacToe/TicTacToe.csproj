@@ -37,8 +37,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ShapeControls">
-      <HintPath>..\..\ShapeControls\ShapeControls\bin\Debug\ShapeControls.dll</HintPath>
+    <Reference Include="ShapeControls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8f26769bac5f0bcf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\repos\ShapeControls\ShapeControls\bin\Debug\ShapeControls.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -64,6 +65,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DoubleToIntValueConverter.cs" />
     <Compile Include="WindowDataContext.cs" />
     <Page Include="GamePage.xaml">
       <SubType>Designer</SubType>

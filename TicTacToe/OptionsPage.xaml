@@ -118,66 +118,74 @@
                 <Button 
                     Margin="0,50,0,0"
                     Content="Back" 
-                    Click="Button_Click"/>
+                    Click="Back_Click"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1">
-                <StackPanel Orientation="Horizontal" Margin="20,80,0,0">
+                <StackPanel Orientation="Horizontal" Margin="20,80,0,0" 
+                            DataContext="{Binding ElementName=scrlPlayers}">
                     <TextBlock
+                            x:Name="txtPlayers"
                             Width="100"
                             HorizontalAlignment="Center"
                             FontSize="28"
                             Style="{StaticResource MenuText}"
-                            Text="Nr"/>
+                            />
                     <ScrollBar x:Name="scrlPlayers" 
                                    Minimum="2" Maximum="4" 
                                    SmallChange="1" LargeChange="1" 
                                    Style="{DynamicResource ScrollBarStyle}"/>
                 </StackPanel>
                
-                <StackPanel Orientation="Horizontal" Margin="20,30,0,0">
+                <StackPanel Orientation="Horizontal" Margin="20,30,0,0" 
+                            DataContext="{Binding ElementName=scrlShapes}">
                     <TextBlock
+                            x:Name="txtShapes"
                             Width="100"
                             HorizontalAlignment="Center"
                             FontSize="28"
                             Style="{StaticResource MenuText}"
-                            Text="Nr"/>
+                            />
                     <ScrollBar x:Name="scrlShapes" 
                                    Minimum="3" Maximum="7"
-                                   
                                    SmallChange="1"
                                    LargeChange="1"
                                    Style="{DynamicResource ScrollBarStyle}"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="20,30,0,0">
+                <StackPanel Orientation="Horizontal" Margin="20,30,0,0"
+                            DataContext="{Binding ElementName=scrlGridSize}">
                     <TextBlock
-                        Width="100"
+                            x:Name="txtGridSize"
+                            Width="100"
                             HorizontalAlignment="Center"
                             FontSize="28"
                             Style="{StaticResource MenuText}"
-                            Text="Size"/>
+                            />
                     <ScrollBar x:Name="scrlGridSize" 
-                                   
                                    Minimum="3" Maximum="100" 
                                    SmallChange="5"
                                    LargeChange="5"
                                    Style="{DynamicResource ScrollBarStyle}"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="20,30,0,0">
+                <StackPanel Orientation="Horizontal" Margin="20,30,0,0"
+                            DataContext="{Binding ElementName=scrlCellSize}">
                     <TextBlock
-                        Width="100"
+                            x:Name="txtCellSize"
+                            Width="100"
                             HorizontalAlignment="Center"
                             FontSize="28"
                             Style="{StaticResource MenuText}"
-                            Text="Size "/>
+                            />
                     <ScrollBar x:Name="scrlCellSize"
-                                   
                                    Minimum="20" Maximum="100"
-                                   SmallChange="1" LargeChange="1"
+                                   SmallChange="10" LargeChange="10"
                                    Style="{DynamicResource ScrollBarStyle}"/>
                 </StackPanel>
                
-                <Button Margin="0,50,0,0" Grid.Column="1" Content="OK" Click="Button_Click"/>
+                <Button Margin="0,50,0,0" 
+                        Grid.Column="1" 
+                        Content="OK" 
+                        Click="OK_Click"/>
             </StackPanel>
 
 

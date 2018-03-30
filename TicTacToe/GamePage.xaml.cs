@@ -23,12 +23,10 @@ namespace TicTacToe
     /// </summary>
     public partial class GamePage : Page
     {
-        public int BoardSize { get; set; } = 60;
-        public int CellSize { get; set; } = 40;
-        public int WinningScore { get; set; } = 5;
+
         public bool GameOver { get; set; } = false;
 
-        PlayerList players;
+        public GameState Game;
 
         MainWindow hostWindow;
 
@@ -41,28 +39,35 @@ namespace TicTacToe
 
             hostWindow = window;
 
+
+            Game = new GameState(
+                new Player(typeof(XShape), "Cross", @"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\GreenArrow.cur"),
+                new Player(typeof(OShape), "Circle", @"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\RedArrow.cur"),
+                new Player(typeof(SquareShape), "Square", @"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\BlueArrow.cur"),
+                new Player(typeof(TriangleShape), "Triangle", @"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\YellowArrow.cur"));
+
             InitializeGrid();
+            hostWindow.Cursor = new Cursor(Game.CurrentPlayer.Cursor);
 
-            players = new PlayerList(
-                new Player(typeof(XShape), "X", @"C:\Users\Sir\source\repos\GreenArrow.cur" /*@"Cursors\GreenArrow.cur"*/),
-                new Player(typeof(OShape), "O", @"C:\Users\Sir\source\repos\RedArrow.cur"  /*@"Cursors\RedArrow.cur"*/ ));
-
-            hostWindow.Cursor = new Cursor(players.Current.PlayerCursor);
-            
         }
 
-        private void InitializeGrid()
+        public void InitializeGrid()
         {
-            for (int i = 0; i < BoardSize; i++)
+            for (int i = 0; i < Game.BoardSize; i++)
             {
-                RowDefinition row = new RowDefinition { Height = new GridLength(CellSize) };
+                RowDefinition row = new RowDefinition { Height = new GridLength(Game.CellSize) };
                 myGameGrid.RowDefinitions.Add(row);
-                ColumnDefinition column = new ColumnDefinition { Width = new GridLength(CellSize) };
+                ColumnDefinition column = new ColumnDefinition { Width = new GridLength(Game.CellSize) };
                 myGameGrid.ColumnDefinitions.Add(column);
             }
 
-            scrollViewer.ScrollToVerticalOffset((CellSize * BoardSize - hostWindow.Height) / 2);
-            scrollViewer.ScrollToHorizontalOffset((CellSize * BoardSize - hostWindow.Width) / 2);
+            foreach (Player player in Game)
+                foreach (var point in player.Points)
+                    AddControlToGrid(player.ControlType, point);
+
+
+            scrollViewer.ScrollToVerticalOffset((Game.CellSize * Game.BoardSize - hostWindow.Height) / 2);
+            scrollViewer.ScrollToHorizontalOffset((Game.CellSize * Game.BoardSize - hostWindow.Width) / 2);
         }
 
         private void normalGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -71,21 +76,21 @@ namespace TicTacToe
                 return;
 
             System.Windows.Point cursorPosition = e.GetPosition(myGameGrid);
-            System.Drawing.Point gridPosition = new System.Drawing.Point((int)cursorPosition.X / CellSize, (int)cursorPosition.Y / CellSize);
+            System.Drawing.Point gridPosition = new System.Drawing.Point((int)cursorPosition.X / Game.CellSize, (int)cursorPosition.Y / Game.CellSize);
 
             if (CheckCell(gridPosition) != null) return;
 
-            AddControlToGrid(players.Current.ControlType, gridPosition);
-            players.Current.Points.Add(gridPosition);
+            AddControlToGrid(Game.CurrentPlayer.ControlType, gridPosition);
+            Game.CurrentPlayer.Points.Add(gridPosition);
 
             int playerScore = CheckScore(gridPosition);
-            if (playerScore >= 5)
+            if (playerScore >= Game.WinningScore)
             {
                 GameEnded();
             }
 
-            players.NextPlayer();
-            hostWindow.Cursor = new Cursor(players.Current.PlayerCursor);
+            Game.NextPlayer();
+            hostWindow.Cursor = new Cursor(Game.CurrentPlayer.Cursor);
         }
 
         private void AddControlToGrid(Type controlType, System.Drawing.Point position)
@@ -105,7 +110,7 @@ namespace TicTacToe
 
         private void GameEnded()
         {
-            MessageBox.Show($"Player {players.Current.Description} won");
+            MessageBox.Show($"Player {Game.CurrentPlayer.Description} won");
             GameOver = true;
         }
 
@@ -126,8 +131,8 @@ namespace TicTacToe
                 {
                     MovePoints(direction, ref pointForward, ref pointBackward);
 
-                    wentForward = CheckCell(pointForward) != null && CheckCell(pointForward).GetType() == players.Current.ControlType;
-                    wentBackward = CheckCell(pointBackward) != null && CheckCell(pointBackward).GetType() == players.Current.ControlType;
+                    wentForward = CheckCell(pointForward) != null && CheckCell(pointForward).GetType() == Game.CurrentPlayer.ControlType;
+                    wentBackward = CheckCell(pointBackward) != null && CheckCell(pointBackward).GetType() == Game.CurrentPlayer.ControlType;
 
                     directionScore += Convert.ToInt32(wentForward) + Convert.ToInt32(wentBackward);
 
@@ -213,7 +218,7 @@ namespace TicTacToe
             using (Stream stream = new FileStream("game.bin", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, players);
+                formatter.Serialize(stream, Game);
             }
         }
 
@@ -224,16 +229,18 @@ namespace TicTacToe
             NewGame_Executed(sender, e);
             try
             {
+                myGameGrid.ColumnDefinitions.RemoveRange(0, Game.BoardSize);
+                myGameGrid.RowDefinitions.RemoveRange(0, Game.BoardSize);
                 using (Stream stream = new FileStream("game.bin", FileMode.Open, FileAccess.Read, FileShare.None))
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
-                    players = (PlayerList)formatter.Deserialize(stream);
+                    Game = (GameState)formatter.Deserialize(stream);
 
-                    foreach (Player player in players)
-                        foreach (var point in player.Points)
-                            AddControlToGrid(player.ControlType, point);
+                    InitializeGrid();
 
-                    hostWindow.Cursor = new Cursor(players.Current.PlayerCursor);
+                    
+
+                    hostWindow.Cursor = new Cursor(Game.CurrentPlayer.Cursor);
                 }
             }
             catch (Exception ex)
@@ -246,7 +253,7 @@ namespace TicTacToe
         public void NewGame_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             myGameGrid.Children.Clear();
-            foreach (Player player in players)
+            foreach (Player player in Game)
                 player.Points.Clear();
 
             GameOver = false;
@@ -265,11 +272,8 @@ namespace TicTacToe
 
         private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-
             HelpPage page = new HelpPage(hostWindow);
             hostWindow.mainFrame.Content = page;
-
-
         }
         #endregion
     }

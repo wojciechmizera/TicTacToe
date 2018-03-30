@@ -21,7 +21,7 @@ namespace TicTacToe
 
         public Type ControlType { get; set; }
         public string Description { get; set; }
-        public string PlayerCursor { get; set; }
+        public string Cursor { get; set; }
 
         /// <summary>
         /// List of coordinates used for saving and loading the game
@@ -32,7 +32,7 @@ namespace TicTacToe
         {
             ControlType = userControl;
             Description = description;
-            PlayerCursor = cursorPath;
+            Cursor = cursorPath;
         }
 
         public Player(){ }
