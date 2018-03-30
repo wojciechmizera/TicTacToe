@@ -28,42 +28,6 @@ namespace TicTacToe
             hostWindow = window;
         }
 
-        #region Menu Commands
-
-
-        private void LoadGame_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            hostWindow.mainFrame.Content = hostWindow.Game;
-            hostWindow.Game.NewGame_Executed(sender, e);
-            hostWindow.Game.LoadGame_Executed(sender, e);
-        }
-
-
-        private void NewGame_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            hostWindow.mainFrame.Content = hostWindow.Game;
-            hostWindow.Game.NewGame_Executed(sender, e);
-        }
-
-
-        private void CanNotExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = false;
-        }
-
-
-        private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void Options_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            hostWindow.mainFrame.Content = hostWindow.Options;
-        }
-
-        #endregion
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             hostWindow.mainFrame.Content = hostWindow.Game;

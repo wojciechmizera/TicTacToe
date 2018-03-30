@@ -8,87 +8,9 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="GamePage">
 
-    <Page.CommandBindings>
-        <CommandBinding Command="local:CustomCommands.SaveGame"
-                        CanExecute="SaveGame_CanExecute"
-                        Executed="SaveGame_Executed"/>
 
-        <CommandBinding Command="local:CustomCommands.LoadGame"
-                        CanExecute="CanExecute"
-                        Executed="LoadGame_Executed"/>
-
-        <CommandBinding Command="local:CustomCommands.NewGame"
-                        CanExecute="CanExecute"
-                        Executed="NewGame_Executed"/>
-
-        <CommandBinding Command="local:CustomCommands.Options"
-                        CanExecute="CanExecute"
-                        Executed="Options_Executed"/>
-
-        <CommandBinding Command="local:CustomCommands.Help"
-                        CanExecute="CanExecute"
-                        Executed="Help_Executed"/>
-    </Page.CommandBindings>
-
-
-    <DockPanel LastChildFill="True">
-
-        <Menu DockPanel.Dock="Top" Height="40" Background="{StaticResource MenuBarBrush}">
-
-
-            <MenuItem Height="40">
-                <MenuItem.Header>
-                    <Viewbox>
-                        <TextBlock Text="Game" Margin="2"/>
-                    </Viewbox>
-                </MenuItem.Header>
-                <MenuItem Height="30" Command="local:CustomCommands.NewGame">
-                    <MenuItem.Header>
-                        <Viewbox>
-                            <TextBlock Text="New Game" Margin="15,0" />
-                        </Viewbox>
-                    </MenuItem.Header>
-                </MenuItem>
-
-                <MenuItem Height="30" Command="local:CustomCommands.LoadGame">
-                    <MenuItem.Header>
-                        <Viewbox>
-                            <TextBlock Text="Load Game" />
-                        </Viewbox>
-                    </MenuItem.Header>
-                </MenuItem>
-
-                <MenuItem Height="30" Command="local:CustomCommands.SaveGame">
-                    <MenuItem.Header>
-                        <Viewbox>
-                            <TextBlock Text="Save Game" />
-                        </Viewbox>
-                    </MenuItem.Header>
-                </MenuItem>
-
-            </MenuItem>
-
-            <MenuItem Height="40" Command="local:CustomCommands.Options">
-                <MenuItem.Header>
-                    <Viewbox>
-                        <TextBlock Text="Options" 
-                                   Margin="2"/>
-                    </Viewbox>
-                </MenuItem.Header>
-            </MenuItem>
-
-            <MenuItem Height="40" Command="local:CustomCommands.Help">
-                <MenuItem.Header>
-                    <Viewbox>
-                        <TextBlock Text="Help" Margin="2"/>
-                    </Viewbox>
-                </MenuItem.Header>
-            </MenuItem>
-
-        </Menu>
 
         <Grid x:Name="ContentGrid">
-
 
             <ScrollViewer Name="scrollViewer"
                   VerticalScrollBarVisibility="Hidden" 
@@ -105,8 +27,5 @@
                 </local:CustomGrid>
             </ScrollViewer>
 
-
-
         </Grid>
-    </DockPanel>
 </Page>

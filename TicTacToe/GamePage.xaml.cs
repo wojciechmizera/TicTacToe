@@ -1,6 +1,7 @@
 ﻿using ShapeControls;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -30,9 +31,6 @@ namespace TicTacToe
 
         MainWindow hostWindow;
 
-
-
-
         public GamePage(MainWindow window)
         {
             InitializeComponent();
@@ -47,8 +45,8 @@ namespace TicTacToe
                 new Player(typeof(TriangleShape), "Triangle", @"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\YellowArrow.cur"));
 
             InitializeGrid();
-            hostWindow.Cursor = new Cursor(Game.CurrentPlayer.Cursor);
-
+            
+            Cursor = new Cursor(Game.CurrentPlayer.Cursor);
         }
 
         public void InitializeGrid()
@@ -83,14 +81,15 @@ namespace TicTacToe
             AddControlToGrid(Game.CurrentPlayer.ControlType, gridPosition);
             Game.CurrentPlayer.Points.Add(gridPosition);
 
-            int playerScore = CheckScore(gridPosition);
-            if (playerScore >= Game.WinningScore)
+            if (PlayerWon(gridPosition))
             {
-                GameEnded();
+                GameOver = true;
             }
-
-            Game.NextPlayer();
-            hostWindow.Cursor = new Cursor(Game.CurrentPlayer.Cursor);
+            else
+            {
+                Game.NextPlayer();
+                Cursor = new Cursor(Game.CurrentPlayer.Cursor);
+            }
         }
 
         private void AddControlToGrid(Type controlType, System.Drawing.Point position)
@@ -114,9 +113,11 @@ namespace TicTacToe
             GameOver = true;
         }
 
-        int CheckScore(System.Drawing.Point position)
+
+        bool PlayerWon(System.Drawing.Point position)
         {
             int maxScore = 0;
+            Direction maxDirection = Direction.Horizontal;
 
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
@@ -136,11 +137,55 @@ namespace TicTacToe
 
                     directionScore += Convert.ToInt32(wentForward) + Convert.ToInt32(wentBackward);
 
+
                 } while (wentForward || wentBackward);
 
-                if (directionScore > maxScore) maxScore = directionScore;
+                if (directionScore > maxScore)
+                {
+                    maxScore = directionScore;
+                    maxDirection = direction;
+                }
             }
-            return maxScore;
+            if (maxScore < Game.WinningScore) return false;
+
+            PaintWinner(maxDirection, position);
+
+            return true;
+        }
+
+        private void PaintWinner(Direction direction, System.Drawing.Point position)
+        {
+            System.Drawing.Point pointForward = new System.Drawing.Point(position.X, position.Y);
+            System.Drawing.Point pointBackward = new System.Drawing.Point(position.X, position.Y);
+
+            bool wentForward;
+            bool wentBackward;
+
+            CheckCell(position).Background = GetWinningColor();
+
+            do
+            {
+                MovePoints(direction, ref pointForward, ref pointBackward);
+
+                wentForward = CheckCell(pointForward) != null && CheckCell(pointForward).GetType() == Game.CurrentPlayer.ControlType;
+                wentBackward = CheckCell(pointBackward) != null && CheckCell(pointBackward).GetType() == Game.CurrentPlayer.ControlType;
+
+                if (wentForward)
+                    CheckCell(pointForward).Background = GetWinningColor();
+                
+
+                if (wentBackward)
+                    CheckCell(pointBackward).Background = GetWinningColor();
+
+            } while (wentForward || wentBackward);
+        }
+
+        private System.Windows.Media.Brush GetWinningColor()
+        {
+            ResourceDictionary colors = new ResourceDictionary();
+            colors.Source = new Uri("Styles/Colors.xaml", UriKind.Relative);
+            System.Windows.Media.Brush b = (System.Windows.Media.Brush)colors["WinningControlBrush"];
+            return b;
         }
 
         private void MovePoints(Direction direction, ref System.Drawing.Point pointForward, ref System.Drawing.Point pointBackward)
@@ -204,77 +249,5 @@ namespace TicTacToe
         #endregion
 
 
-        #region Menu Commands
-
-        private void SaveGame_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (myGameGrid.Children.Count > 0 && !GameOver)
-                e.CanExecute = true;
-        }
-
-
-        private void SaveGame_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            using (Stream stream = new FileStream("game.bin", FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, Game);
-            }
-        }
-
-
-
-        public void LoadGame_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            NewGame_Executed(sender, e);
-            try
-            {
-                myGameGrid.ColumnDefinitions.RemoveRange(0, Game.BoardSize);
-                myGameGrid.RowDefinitions.RemoveRange(0, Game.BoardSize);
-                using (Stream stream = new FileStream("game.bin", FileMode.Open, FileAccess.Read, FileShare.None))
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    Game = (GameState)formatter.Deserialize(stream);
-
-                    InitializeGrid();
-
-                    
-
-                    hostWindow.Cursor = new Cursor(Game.CurrentPlayer.Cursor);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-
-        public void NewGame_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            myGameGrid.Children.Clear();
-            foreach (Player player in Game)
-                player.Points.Clear();
-
-            GameOver = false;
-        }
-
-
-        private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void Options_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            hostWindow.mainFrame.Content = hostWindow.Options;
-        }
-
-        private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            HelpPage page = new HelpPage(hostWindow);
-            hostWindow.mainFrame.Content = page;
-        }
-        #endregion
     }
 }

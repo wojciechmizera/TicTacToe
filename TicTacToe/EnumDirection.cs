@@ -15,5 +15,6 @@ namespace TicTacToe
         Horizontal,
         LeftAslant,
         RightAslant
+
     }
 }

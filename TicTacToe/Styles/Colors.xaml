@@ -39,10 +39,15 @@
     </LinearGradientBrush>
 
     <Color x:Key="ControlDisabled">#888888</Color>
-    <SolidColorBrush x:Key="DisabledBrush" Color="ControlDisabled"/>
+    <SolidColorBrush x:Key="DisabledBrush" Color="{StaticResource ControlDisabled}"/>
 
     <Color x:Key="MouseHoverButton">#FFA80EF4</Color>
     <SolidColorBrush x:Key="MouseHoverButtonBrush" Color="{StaticResource MouseHoverButton}"/>
+
+    <RadialGradientBrush x:Key="WinningControlBrush">
+        <GradientStop Color="{StaticResource MenuLeft}" Offset="0.702"/>
+        <GradientStop Offset="1"/>
+    </RadialGradientBrush>
 
 
 </ResourceDictionary>

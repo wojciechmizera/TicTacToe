@@ -8,188 +8,104 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OptionsPage">
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
 
-
-    <Page.CommandBindings>
-        <CommandBinding Command="local:CustomCommands.SaveGame"
-                        CanExecute="CanNotExecute" />
-
-        <CommandBinding Command="local:CustomCommands.LoadGame"
-                        CanExecute="CanExecute"
-                        Executed="LoadGame_Executed"/>
-
-        <CommandBinding Command="local:CustomCommands.NewGame"
-                        CanExecute="CanExecute"
-                        Executed="NewGame_Executed"/>
-
-        <CommandBinding Command="local:CustomCommands.Options"
-                        CanExecute="CanNotExecute"
-/>
-
-        <CommandBinding Command="local:CustomCommands.Help"
-                        CanExecute="CanExecute"
-                        Executed="Help_Executed"/>
-    </Page.CommandBindings>
-
-
-    <DockPanel LastChildFill="True">
-
-        <Menu DockPanel.Dock="Top" Height="40" Background="{StaticResource MenuBarBrush}">
-
-
-            <MenuItem Height="40">
-                <MenuItem.Header>
-                    <Viewbox>
-                        <TextBlock Text="Game" Margin="2"/>
-                    </Viewbox>
-                </MenuItem.Header>
-                <MenuItem Height="30" Command="local:CustomCommands.NewGame">
-                    <MenuItem.Header>
-                        <Viewbox>
-                            <TextBlock Text="New Game" Margin="15,0" />
-                        </Viewbox>
-                    </MenuItem.Header>
-                </MenuItem>
-
-                <MenuItem Height="30" Command="local:CustomCommands.LoadGame">
-                    <MenuItem.Header>
-                        <Viewbox>
-                            <TextBlock Text="Load Game" />
-                        </Viewbox>
-                    </MenuItem.Header>
-                </MenuItem>
-
-                <MenuItem Height="30" Command="local:CustomCommands.SaveGame">
-                    <MenuItem.Header>
-                        <Viewbox>
-                            <TextBlock Text="Save Game" />
-                        </Viewbox>
-                    </MenuItem.Header>
-                </MenuItem>
-
-            </MenuItem>
-
-            <MenuItem Height="40" Command="local:CustomCommands.Options">
-                <MenuItem.Header>
-                    <Viewbox>
-                        <TextBlock Text="Options" 
-                                   Margin="2"/>
-                    </Viewbox>
-                </MenuItem.Header>
-            </MenuItem>
-
-            <MenuItem Height="40" Command="local:CustomCommands.Help">
-                <MenuItem.Header>
-                    <Viewbox>
-                        <TextBlock Text="Help" Margin="2"/>
-                    </Viewbox>
-                </MenuItem.Header>
-            </MenuItem>
-
-        </Menu>
-        
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <TextBlock
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <TextBlock
                     Margin="60,80,0,0"
                     FontSize="28"
                     Style="{StaticResource MenuText}"
                     Text="Number of players"/>
-                <TextBlock
+            <TextBlock
                     Margin="60,30,0,0"
                     FontSize="28"
                     Style="{StaticResource MenuText}"
                     Text="Number of shapes to win"/>
-                <TextBlock
+            <TextBlock
                     Margin="60,30,0,0"
                     FontSize="28"
                     Style="{StaticResource MenuText}"
                     Text="Size of the grid"/>
-                <TextBlock
+            <TextBlock
                     Margin="60,30,0,0"
                     FontSize="28"
                     Style="{StaticResource MenuText}"
                     Text="Size of a cell"/>
-                <Button 
+            <Button 
                     Margin="0,50,0,0"
                     Content="Back" 
                     Click="Back_Click"/>
-            </StackPanel>
+        </StackPanel>
 
-            <StackPanel Grid.Column="1">
-                <StackPanel Orientation="Horizontal" Margin="20,80,0,0" 
+        <StackPanel Grid.Column="1">
+            <StackPanel Orientation="Horizontal" Margin="20,80,0,0" 
                             DataContext="{Binding ElementName=scrlPlayers}">
-                    <TextBlock
+                <TextBlock
                             x:Name="txtPlayers"
                             Width="100"
                             HorizontalAlignment="Center"
                             FontSize="28"
                             Style="{StaticResource MenuText}"
                             />
-                    <ScrollBar x:Name="scrlPlayers" 
+                <ScrollBar x:Name="scrlPlayers" 
                                    Minimum="2" Maximum="4" 
                                    SmallChange="1" LargeChange="1" 
                                    Style="{DynamicResource ScrollBarStyle}"/>
-                </StackPanel>
-               
-                <StackPanel Orientation="Horizontal" Margin="20,30,0,0" 
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="20,30,0,0" 
                             DataContext="{Binding ElementName=scrlShapes}">
-                    <TextBlock
+                <TextBlock
                             x:Name="txtShapes"
                             Width="100"
                             HorizontalAlignment="Center"
                             FontSize="28"
                             Style="{StaticResource MenuText}"
                             />
-                    <ScrollBar x:Name="scrlShapes" 
+                <ScrollBar x:Name="scrlShapes" 
                                    Minimum="3" Maximum="7"
                                    SmallChange="1"
                                    LargeChange="1"
                                    Style="{DynamicResource ScrollBarStyle}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="20,30,0,0"
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="20,30,0,0"
                             DataContext="{Binding ElementName=scrlGridSize}">
-                    <TextBlock
+                <TextBlock
                             x:Name="txtGridSize"
                             Width="100"
                             HorizontalAlignment="Center"
                             FontSize="28"
                             Style="{StaticResource MenuText}"
                             />
-                    <ScrollBar x:Name="scrlGridSize" 
+                <ScrollBar x:Name="scrlGridSize" 
                                    Minimum="3" Maximum="100" 
                                    SmallChange="5"
                                    LargeChange="5"
                                    Style="{DynamicResource ScrollBarStyle}"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="20,30,0,0"
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="20,30,0,0"
                             DataContext="{Binding ElementName=scrlCellSize}">
-                    <TextBlock
+                <TextBlock
                             x:Name="txtCellSize"
                             Width="100"
                             HorizontalAlignment="Center"
                             FontSize="28"
                             Style="{StaticResource MenuText}"
                             />
-                    <ScrollBar x:Name="scrlCellSize"
+                <ScrollBar x:Name="scrlCellSize"
                                    Minimum="20" Maximum="100"
                                    SmallChange="10" LargeChange="10"
                                    Style="{DynamicResource ScrollBarStyle}"/>
-                </StackPanel>
-               
-                <Button Margin="0,50,0,0" 
+            </StackPanel>
+
+            <Button Margin="0,50,0,0" 
                         Grid.Column="1" 
                         Content="OK" 
                         Click="OK_Click"/>
-            </StackPanel>
-
-
-        </Grid>
-    </DockPanel>
-
+        </StackPanel>
+    </Grid>
 </Page>

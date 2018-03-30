@@ -43,9 +43,9 @@
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
-                    
                 </ControlTemplate>
             </Setter.Value>
+                    
         </Setter>
     </Style>
    
@@ -57,7 +57,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
-                    <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                    <Rectangle Fill="{TemplateBinding Background}" 
+                               Height="{TemplateBinding Height}" 
+                               Width="{TemplateBinding Width}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -66,22 +68,19 @@
     <SolidColorBrush x:Key="ScrollBar.Pressed.Thumb" Color="#606060"/>
     <SolidColorBrush x:Key="ScrollBar.Static.Thumb" Color="#CDCDCD"/>
     
-    
+    <!-- thumb -->
     <Style x:Key="ScrollBarThumbHorizontal" TargetType="{x:Type Thumb}">
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="IsTabStop" Value="false"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Rectangle x:Name="rectangle" Fill="{StaticResource ScrollBar.Static.Thumb}" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" Width="{TemplateBinding Width}"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Fill" TargetName="rectangle" Value="{StaticResource ScrollBar.MouseOver.Thumb}"/>
-                        </Trigger>
-                        <Trigger Property="IsDragging" Value="true">
-                            <Setter Property="Fill" TargetName="rectangle" Value="{StaticResource ScrollBar.Pressed.Thumb}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                    <Rectangle x:Name="rectangle" 
+                               Fill="{StaticResource ScrollBar.Static.Thumb}" 
+                               Height="{TemplateBinding Height}" 
+                               SnapsToDevicePixels="True" 
+                               Width="{TemplateBinding Width}"/>
+                   
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -104,15 +103,16 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
-                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="1"/>
+                        <Border   Background="{TemplateBinding Background}" Grid.Column="1"/>
                         
+                        <!-- Arrow left -->
                         <RepeatButton x:Name="PART_LineLeftButton" 
                                       Command="{x:Static ScrollBar.LineLeftCommand}" 
                                       IsEnabled="{TemplateBinding IsMouseOver}" 
                                       Style="{StaticResource ScrollBarButton}">
                             <Path x:Name="ArrowLeft" 
                                   Data="M141.15,0.2 C141.15,0.2 103.42322,8.5029592 103.04985,25.3 102.64974,43.300001 140.65007,51.699999 140.65007,51.699999 140.65007,51.699999 128.65005,39.500001 128.85005,25.7 129.05615,11.478976 141.15,0.2 141.15,0.2 z"
-                                  Fill="{StaticResource MenuLeftBrush}" 
+                                  Fill="{StaticResource ScrollBar.Static.Thumb}" 
                                   Stretch="Uniform"/>
                         </RepeatButton>
                         
@@ -130,6 +130,7 @@
                             </Track.Thumb>
                         </Track>
                         
+                        <!-- arrow right -->
                         <RepeatButton x:Name="PART_LineRightButton" 
                                       Grid.Column="2" 
                                       Command="{x:Static ScrollBar.LineRightCommand}" 
@@ -138,18 +139,20 @@
                             <Path x:Name="ArrowRight" 
                                   Data="M19.95,0.8 C19.95,0.8 57.65023,8.2894151 57.650186,25.3 57.650143,41.9 19.850001,52.5 19.850001,52.5 19.850001,52.5 32.250061,38.3 32.650063,25.9 33.064563,13.050556 19.95,0.8 19.95,0.8 z" 
 
-                                  Fill="{StaticResource MenuRightBrush}" 
+                                  Fill="{StaticResource ScrollBar.Static.Thumb}" 
                                   Stretch="Uniform"/>
                         </RepeatButton>
                     </Grid>
                     <ControlTemplate.Triggers>
-                       
+                      
+                        
+                        <!-- trigers -->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding IsMouseOver, ElementName=PART_LineRightButton}" Value="true"/>
                                 <Condition Binding="{Binding IsPressed, ElementName=PART_LineRightButton}" Value="true"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter Property="Fill" TargetName="ArrowRight" Value="{StaticResource ScrollBar.Pressed.Glyph}"/>
+                            <Setter Property="Fill" TargetName="ArrowRight" Value="Blue"/>
                         </MultiDataTrigger>
                         
                         <MultiDataTrigger>
@@ -157,7 +160,7 @@
                                 <Condition Binding="{Binding IsMouseOver, ElementName=PART_LineLeftButton}" Value="true"/>
                                 <Condition Binding="{Binding IsPressed, ElementName=PART_LineLeftButton}" Value="true"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter Property="Fill" TargetName="ArrowLeft" Value="{StaticResource ScrollBar.Pressed.Glyph}"/>
+                            <Setter Property="Fill" TargetName="ArrowLeft" Value="Blue"/>
                         </MultiDataTrigger>
                         
                         <MultiDataTrigger>
@@ -165,7 +168,7 @@
                                 <Condition Binding="{Binding IsMouseOver, ElementName=PART_LineRightButton}" Value="true"/>
                                 <Condition Binding="{Binding IsPressed, ElementName=PART_LineRightButton}" Value="false"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter Property="Fill" TargetName="ArrowRight" Value="{StaticResource ScrollBar.MouseOver.Glyph}"/>
+                            <Setter Property="Fill" TargetName="ArrowRight" Value="{StaticResource MenuRightBrush}"/>
                         </MultiDataTrigger>
                         
                         <MultiDataTrigger>
@@ -173,8 +176,8 @@
                                 <Condition Binding="{Binding IsMouseOver, ElementName=PART_LineLeftButton}" Value="true"/>
                                 <Condition Binding="{Binding IsPressed, ElementName=PART_LineLeftButton}" Value="false"/>
                             </MultiDataTrigger.Conditions>
-                            
-                            <Setter Property="Fill" TargetName="ArrowLeft" Value="{StaticResource ScrollBar.MouseOver.Glyph}"/>
+
+                            <Setter Property="Fill" TargetName="ArrowLeft" Value="{StaticResource MenuRightBrush}"/>
                         </MultiDataTrigger>
                         
                     </ControlTemplate.Triggers>

@@ -66,7 +66,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DoubleToIntValueConverter.cs" />
-    <Compile Include="WindowDataContext.cs" />
     <Page Include="GamePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,7 +125,7 @@
       <DependentUpon>OptionsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Player.cs" />
-    <Compile Include="PlayerList.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -153,11 +152,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Resource Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Cursors\GreenArrow.cur" />
     <Resource Include="Cursors\RedArrow.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Cursors\BaseArrow.cur" />
+    <Resource Include="Cursors\BlueArrow.cur" />
+    <Resource Include="Cursors\YellowArrow.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

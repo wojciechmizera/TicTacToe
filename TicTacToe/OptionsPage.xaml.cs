@@ -23,6 +23,8 @@ namespace TicTacToe
     {
         MainWindow hostWindow;
         GameState Game;
+
+
         public OptionsPage(MainWindow window)
         {
             InitializeComponent();
@@ -36,8 +38,8 @@ namespace TicTacToe
             scrlShapes.Value = Game.WinningScore;
 
             SetScrollBindings();
-
         }
+
 
         private void SetScrollBindings()
         {
@@ -46,6 +48,7 @@ namespace TicTacToe
             SetBinding(txtPlayers, scrlPlayers);
             SetBinding(txtShapes, scrlShapes);
         }
+
 
         private void SetBinding(TextBlock textBox, ScrollBar scrollBar)
         {
@@ -57,46 +60,11 @@ namespace TicTacToe
         }
 
 
-        #region Menu Commands
-
-
-        private void LoadGame_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            hostWindow.mainFrame.Content = hostWindow.Game;
-            hostWindow.Game.NewGame_Executed(sender, e);
-            hostWindow.Game.LoadGame_Executed(sender, e);
-        }
-
-
-        private void NewGame_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            hostWindow.mainFrame.Content = hostWindow.Game;
-            hostWindow.Game.NewGame_Executed(sender, e);
-        }
-
-
-        private void CanNotExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = false;
-        }
-
-
-        private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            hostWindow.mainFrame.Content = hostWindow.Help;
-        }
-        #endregion
-
-
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             hostWindow.mainFrame.Content = hostWindow.Game;
         }
+
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
@@ -105,22 +73,27 @@ namespace TicTacToe
 
             UpdateGameSettings();
 
-           hostWindow.Game.myGameGrid.Children.Clear();
+            hostWindow.Game.myGameGrid.Children.Clear();
             foreach (Player player in Game)
                 player.Points.Clear();
 
             hostWindow.Game.InitializeGrid();
 
             hostWindow.mainFrame.Content = hostWindow.Game;
+            hostWindow.Game.GameOver = false;
         }
 
         private void UpdateGameSettings()
         {
-            hostWindow.Game.Game.CellSize = (int)scrlCellSize.Value;
-            hostWindow.Game.Game.BoardSize = (int)scrlGridSize.Value;
-            hostWindow.Game.Game.NumberOfPlayers = (int)scrlPlayers.Value;
-            hostWindow.Game.Game.WinningScore = (int)scrlShapes.Value;
+            Game.CellSize = (int)scrlCellSize.Value;
+            Game.BoardSize = (int)scrlGridSize.Value;
+            Game.NumberOfPlayers = (int)scrlPlayers.Value;
+            Game.WinningScore = (int)scrlShapes.Value;
 
+            foreach (Player player in Game)
+            {
+                player.Points.Clear();
+            }
         }
     }
 }
