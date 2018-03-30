@@ -107,5 +107,10 @@ namespace TicTacToe
         {
             mainFrame.Content = new HelpPage(this);
         }
+
+        private void Exit_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

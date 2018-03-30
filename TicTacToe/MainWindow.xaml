@@ -30,6 +30,9 @@
         <CommandBinding Command="local:CustomCommands.Help"
                         CanExecute="CanExecute"
                         Executed="Help_Executed"/>
+        <CommandBinding Command="local:CustomCommands.Exit"
+                        CanExecute="CanExecute"
+                        Executed="Exit_Executed"/>
     </Window.CommandBindings>
 
 
@@ -67,6 +70,15 @@
                         </Viewbox>
                     </MenuItem.Header>
                 </MenuItem>
+                <MenuItem Height="30" Command="local:CustomCommands.Exit">
+                    <MenuItem.Header>
+                        <Viewbox>
+                            <TextBlock Text="Exit"/>
+                        </Viewbox>
+                    </MenuItem.Header>
+                </MenuItem>
+
+
 
             </MenuItem>
 
