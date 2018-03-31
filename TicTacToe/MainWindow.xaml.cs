@@ -33,8 +33,31 @@ namespace TicTacToe
             Game = new GamePage(this);
             mainFrame.Content = Game;
 
-            Cursor = new Cursor(@"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\BaseArrow.cur");
+            mainFrame.ContentRendered += ChangeCursor;
         }
+
+        private void ChangeCursor(object sender, EventArgs e)
+        {
+            Frame frame = sender as Frame;
+            if (frame.Content.GetType() == typeof(GamePage))
+                OverrideCursor(Game.Game.CurrentPlayer.Cursor);
+
+            else
+                OverrideCursor("BaseArrow.cur");
+        }
+
+        public void OverrideCursor(string cursorName)
+        {
+            try
+            {
+            using (Stream s = new FileStream(@"Cursors\" + cursorName, FileMode.Open, FileAccess.Read, FileShare.None))
+            {
+                    Mouse.OverrideCursor = new Cursor(s);
+            }
+            }
+            catch { }
+        }
+
 
 
         private void SaveGame_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -67,8 +90,6 @@ namespace TicTacToe
                     Game.Game = (GameState)formatter.Deserialize(stream);
 
                     Game.InitializeGrid();
-
-                    Game.Cursor = new Cursor(Game.Game.CurrentPlayer.Cursor);
                 }
             }
             catch (Exception ex)

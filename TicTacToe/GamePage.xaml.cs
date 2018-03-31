@@ -39,14 +39,12 @@ namespace TicTacToe
 
 
             Game = new GameState(
-                new Player(typeof(XShape), "Cross", @"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\GreenArrow.cur"),
-                new Player(typeof(OShape), "Circle", @"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\RedArrow.cur"),
-                new Player(typeof(SquareShape), "Square", @"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\BlueArrow.cur"),
-                new Player(typeof(TriangleShape), "Triangle", @"C:\Users\Sir\source\repositories\TicTacToe\TicTacToe\Cursors\YellowArrow.cur"));
+                new Player(typeof(XShape), "Cross", "GreenArrow.cur"),
+                new Player(typeof(OShape), "Circle", "RedArrow.cur"),
+                new Player(typeof(SquareShape), "Square", "BlueArrow.cur"),
+                new Player(typeof(TriangleShape), "Triangle", "YellowArrow.cur"));
 
             InitializeGrid();
-            
-            Cursor = new Cursor(Game.CurrentPlayer.Cursor);
         }
 
         public void InitializeGrid()
@@ -88,7 +86,7 @@ namespace TicTacToe
             else
             {
                 Game.NextPlayer();
-                Cursor = new Cursor(Game.CurrentPlayer.Cursor);
+                hostWindow.OverrideCursor(Game.CurrentPlayer.Cursor);
             }
         }
 

@@ -16,6 +16,5 @@ namespace TicTacToe
 
         public static readonly RoutedUICommand Options = new RoutedUICommand("Opens options page", "OptionsCommand", typeof(CustomCommands));
         public static readonly RoutedUICommand Help = new RoutedUICommand("Shows Help", "HelpCommand", typeof(CustomCommands));
-
     }
 }

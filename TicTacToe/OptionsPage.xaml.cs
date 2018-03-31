@@ -32,16 +32,19 @@ namespace TicTacToe
 
             Game = hostWindow.Game.Game;
 
+            SetScrollBarsValues();
+            SetScrollTextBindings();
+        }
+
+        private void SetScrollBarsValues()
+        {
             scrlCellSize.Value = Game.CellSize;
             scrlGridSize.Value = Game.BoardSize;
             scrlPlayers.Value = Game.NumberOfPlayers;
             scrlShapes.Value = Game.WinningScore;
-
-            SetScrollBindings();
         }
 
-
-        private void SetScrollBindings()
+        private void SetScrollTextBindings()
         {
             SetBinding(txtCellSize, scrlCellSize);
             SetBinding(txtGridSize, scrlGridSize);
@@ -71,16 +74,13 @@ namespace TicTacToe
             hostWindow.Game.myGameGrid.ColumnDefinitions.RemoveRange(0, Game.BoardSize);
             hostWindow.Game.myGameGrid.RowDefinitions.RemoveRange(0, Game.BoardSize);
 
-            UpdateGameSettings();
-
             hostWindow.Game.myGameGrid.Children.Clear();
             foreach (Player player in Game)
                 player.Points.Clear();
 
-            hostWindow.Game.InitializeGrid();
+            UpdateGameSettings();
 
             hostWindow.mainFrame.Content = hostWindow.Game;
-            hostWindow.Game.GameOver = false;
         }
 
         private void UpdateGameSettings()
@@ -89,6 +89,9 @@ namespace TicTacToe
             Game.BoardSize = (int)scrlGridSize.Value;
             Game.NumberOfPlayers = (int)scrlPlayers.Value;
             Game.WinningScore = (int)scrlShapes.Value;
+
+            hostWindow.Game.InitializeGrid();
+            hostWindow.Game.GameOver = false;
 
             foreach (Player player in Game)
             {

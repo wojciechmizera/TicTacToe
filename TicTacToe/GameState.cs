@@ -14,7 +14,19 @@ namespace TicTacToe
         private List<Player> AllPlayers;
         public Player CurrentPlayer { get; private set; }
 
-        public int NumberOfPlayers { get; set; } = 2;
+        private int _NumberOfPlayers = 2;
+        public int NumberOfPlayers
+        {
+            get
+            { return _NumberOfPlayers; }
+            set
+            {
+                _NumberOfPlayers = value;
+                CurrentIndex = CurrentIndex % NumberOfPlayers;
+                CurrentPlayer = AllPlayers[CurrentIndex];
+            }
+        }
+
         public int BoardSize { get; set; } = 60;
         public int CellSize { get; set; } = 40;
         public int WinningScore { get; set; } = 5;

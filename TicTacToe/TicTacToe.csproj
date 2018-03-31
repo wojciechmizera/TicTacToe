@@ -155,13 +155,23 @@
     <Resource Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Cursors\GreenArrow.cur" />
-    <Resource Include="Cursors\RedArrow.cur" />
+    <EmbeddedResource Include="Cursors\GreenArrow.cur">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cursors\RedArrow.cur">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Cursors\BaseArrow.cur" />
-    <Resource Include="Cursors\BlueArrow.cur" />
-    <Resource Include="Cursors\YellowArrow.cur" />
+    <EmbeddedResource Include="Cursors\BaseArrow.cur">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cursors\BlueArrow.cur">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cursors\YellowArrow.cur">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
